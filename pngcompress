@@ -1,0 +1,3 @@
+#!/bin/bash
+
+python -c "from pngcompressor import compress; compress('$1')"
