@@ -42,6 +42,7 @@ def compress(path):
             compress(os.path.join(path, new_path))
     job = CompressionJob(path)
     job.start()
+    return job
 
 class CompressionJob(threading.Thread):
 
