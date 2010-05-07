@@ -40,7 +40,7 @@ class FileTests(unittest.TestCase):
 
     def wait(self, job):
         """
-        Wait for this thread to end, otherwise the tests will fail
+        Wait for job thread to end, otherwise the tests will fail
         and the directories will be removed before the compression
         is run.
         """
@@ -65,7 +65,16 @@ class FileTests(unittest.TestCase):
         self.assertTrue(old_file_size > new_file_size)
 
     def test_compress_directory(self):
-        raise Exception("Not implemented")
+        before_sizes = [os.path.getsize(os.path.join(self.tmp_path, path)) for path in os.listdir(self.tmp_path)
+                        if os.path.isfile(os.path.join(self.tmp_path, path))]
+        
+        compressor = pngcompressor.compress(self.tmp_path)
+        self.wait(compressor)
+        
+        after_sizes = [os.path.getsize(os.path.join(self.tmp_path, path)) for path in os.listdir(self.tmp_path)
+                        if os.path.isfile(os.path.join(self.tmp_path, path))]
+        
+        self.assertNotEqual(before_sizes, after_sizes)
 
     def test_bypass_png(self):
         compressor = pngcompressor.compress(self.get_tmp_file('small png'))
@@ -77,4 +86,7 @@ class FileTests(unittest.TestCase):
         raise Exception("Not implemented")
 
     def test_bypass_animated_gif(self):
-        raise Exception("Not implemented")
+        compressor = pngcompressor.compress(self.get_tmp_file('animation'))
+        self.wait(compressor)
+
+        self.assertFalse(os.path.isfile(self.get_tmp_file('animation')))
