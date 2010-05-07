@@ -1,3 +1,7 @@
-pngcompressor
+pngcompressor - a multi-threaded compressor for PNG and GIF files.
+
+Right now it uses only pngnq to compress the files, but in the future it will be passed by pngcrush processing too.
+If a compressed file is smaller than the original, the original is removed. Otherwise, we keep the original one.
+All non-animated GIF files will be tried upon compression, and pass through the same constraints above; In a success scenario, their extension is changed to ".png".
 
 License: BSD (see "BSD-License")
